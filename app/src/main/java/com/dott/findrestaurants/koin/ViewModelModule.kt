@@ -7,9 +7,7 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
 
-    viewModel {
-        RestaurantsMapViewModel(get())
-        DetailsViewModel(get())
-    }
+    viewModel { RestaurantsMapViewModel(get())}
+    viewModel { DetailsViewModel(get()) }
 
 }

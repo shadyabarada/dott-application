@@ -1,6 +1,7 @@
 package com.dott.findrestaurants.koin
 
-import io.reactivex.schedulers.Schedulers.single
+import com.dott.findrestaurants.network.RestaurantsInterceptor
+import com.dott.findrestaurants.utils.ConstantStrings
 import okhttp3.OkHttpClient
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -14,15 +15,16 @@ val networkModule = module {
 
     fun provideHttpClient(): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient.Builder()
-            .connectTimeout(connectTimeout, TimeUnit.SECONDS)
-            .readTimeout(readTimeout, TimeUnit.SECONDS)
+                .connectTimeout(connectTimeout, TimeUnit.SECONDS)
+                .readTimeout(readTimeout, TimeUnit.SECONDS)
+                .addInterceptor(RestaurantsInterceptor())
         okHttpClientBuilder.build()
         return okHttpClientBuilder.build()
     }
 
     fun provideRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("") //TODO: Set base URL
+            .baseUrl(ConstantStrings.Services.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(client)
