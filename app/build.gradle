@@ -6,6 +6,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        releaseSigningConfig {
+            storeFile file('C:\\Users\\shadya.barada\\FindRestaurants\\app\\digicelkey.keystore')
+            storePassword "Digice11"
+            keyAlias "digicel"
+            keyPassword "Digice11"
+        }
+    }
     compileSdkVersion 31
     buildToolsVersion "29.0.3"
 
@@ -20,7 +28,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            signingConfig signingConfigs.releaseSigningConfig
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

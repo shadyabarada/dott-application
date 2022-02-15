@@ -15,14 +15,16 @@ class RestaurantsRepositoryImpl(private val restaurantsApi: RestaurantsApi, priv
         return restaurantsApi.getNearbyRestaurants( categories, ne, sw, limit).subscribeOn(Schedulers.io()).doOnNext{
             val restaurants = it.results
             val data = arrayListOf<RestosData>()
-            for(resto in restaurants)
-            {
-                val id = resto.fsq_id
-                val lat = resto.geocodes.main.latitude
-                val long = resto.geocodes.main.longitude
-                val name = resto.name
-                val restoItem = RestosData(id, lat, long, name)
-                data.add(restoItem)
+            restaurants?.let {
+                for(resto in restaurants)
+                {
+                    val id = resto.fsq_id
+                    val lat = resto.geocodes.main.latitude
+                    val long = resto.geocodes.main.longitude
+                    val name = resto.name
+                    val restoItem = RestosData(id, lat, long, name)
+                    data.add(restoItem)
+                }
             }
             addRestaurantsToDb(data)
         }.observeOn(AndroidSchedulers.mainThread())
